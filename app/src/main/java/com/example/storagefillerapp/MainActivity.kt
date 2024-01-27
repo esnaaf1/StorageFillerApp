@@ -89,8 +89,8 @@ fun getAvailableInternalMemorySize(): Long {
 }
 
 fun writeFile(freespace: Long) :Long {
-    // subtract 50MB from the free space.
+    // subtract 100MB from the free space.
     // this is the file size
-    var filesize = freespace - 50
+    var filesize = freespace - 100
     return filesize
 }
