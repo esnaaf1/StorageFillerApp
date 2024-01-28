@@ -19,13 +19,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
 import com.example.storagefillerapp.ui.theme.StorageFillerAppTheme
 import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStreamWriter
-
-
+import java.io.IOException
 
 
 class MainActivity : ComponentActivity() {
@@ -45,11 +41,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun ShowAvailableSpace( modifier: Modifier = Modifier) {
 
-    var AvailableBytes by remember {
+    var AvailableMB by remember {
         mutableStateOf(getAvailableInternalMemorySize()) }
 
     Column (modifier = Modifier
@@ -64,15 +59,17 @@ fun ShowAvailableSpace( modifier: Modifier = Modifier) {
 //            AvailableBytes = getAvailableInternalMemorySize() /1024/1024
 
             Text(
-                text = "The Available Internal Storage is $AvailableBytes MB",
+                text = "The Available Internal Storage is $AvailableMB MB",
                 modifier = modifier
             )
         }
 
         Button(onClick = {
-           var filesize = writeFile(getAvailableInternalMemorySize())
-            AvailableBytes -= filesize
-
+//           var filesize = writeFile(getAvailableInternalMemorySize())
+//            AvailableBytes -= filesize
+              writeFile(AvailableMB)
+//            writeTextFile()
+            AvailableMB = getAvailableInternalMemorySize()
 
         }) {
             Text(text = "Fill The Storage")
@@ -85,12 +82,30 @@ fun getAvailableInternalMemorySize(): Long {
     val stat = StatFs(path.path)
     val blockSize = stat.blockSizeLong
     val availableBlocks = stat.availableBlocksLong
+    // return the available space in Mega Bytes
     return (availableBlocks * blockSize)/1024/1024
 }
 
-fun writeFile(freespace: Long) :Long {
-    // subtract 100MB from the free space.
-    // this is the file size
-    var filesize = freespace - 100
-    return filesize
+fun writeFile(freeSpace: Long) {
+    /* We want to set an arbitrary limit of ~50 MB of free
+     disk space.
+     */
+
+    try {
+        // set the maximum file size
+        var maxFileSize = freeSpace - 50
+        val fileName = "/storage/emulated/0/Download/test.txt"
+        val file = File(fileName)
+        val oneMB = 1024 * 1024
+        var buffer = ByteArray(oneMB)
+        if (maxFileSize > 0) {
+            file.writeBytes(buffer)
+            for (i in 1..maxFileSize) {
+                file.appendBytes(buffer)
+            }
+        }
+    } catch (e:IOException) {
+        println("File Error!")
+    }
 }
+
