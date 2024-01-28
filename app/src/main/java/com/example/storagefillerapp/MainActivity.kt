@@ -91,6 +91,7 @@ fun writeFile(freeSpace: Long) {
      disk space.
      */
 
+
     try {
         // set the maximum file size
         var maxFileSize = freeSpace - 50
