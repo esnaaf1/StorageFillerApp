@@ -144,10 +144,11 @@ fun ShowAvailableSpace( modifier: Modifier = Modifier) {
             .border(2.dp, Color.Blue))
         {
            Column {
-               Text(text = "App limitations:")
-               Text(text = " It does not always fill the disk to the exact specified threshold." +
+               Text(text = "Known limitations:")
+               Text(text = " 1)It does not always fill the disk to the exact specified threshold (50 MB)." +
                        " This could be due to rouding and other resource usage. ")
-               Text(text = " Add File is not optimized so it might take a bit longer.")
+               Text(text = " 2) Add File is not optimized for performance, so it might take a bit longer" +
+                       " than expected.")
            }
 
 
