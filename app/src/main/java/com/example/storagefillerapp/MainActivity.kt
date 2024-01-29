@@ -78,7 +78,7 @@ fun ShowAvailableSpace( modifier: Modifier = Modifier) {
                     "Click the Add File button to add the file, click the Remove file to " +
                     "delete the file." +
                     " The row below shows the current avaiable storage and it is updated" +
-                    " when a file is added or deleted.",
+                    " when a file is added or deleted.", fontWeight = FontWeight.Bold
             )
         }
 
@@ -144,11 +144,15 @@ fun ShowAvailableSpace( modifier: Modifier = Modifier) {
             .border(2.dp, Color.Blue))
         {
            Column {
-               Text(text = "Known limitations:")
+               Text(text = "Known limitations/issues:", fontWeight = FontWeight.Bold)
                Text(text = " 1)It does not always fill the disk to the exact specified threshold (50 MB)." +
                        " This could be due to rouding and other resource usage. ")
                Text(text = " 2) Add File is not optimized for performance, so it might take a bit longer" +
                        " than expected.")
+               Text(text = " 3) If the file is not deleted before closing the app, there might not " +
+                       "be enough disk resources to re-build the app. " +
+                       "Please delete the file before rebuilding the app.")
+
            }
 
 
